@@ -1,4 +1,4 @@
-# arhan.dev 
+# web
 
 ### Extra tools:
 - [arhan.dev/generator](https://arhan.dev/generator) - configure ur own portifolio page easily and copy the code
