@@ -10,16 +10,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
     <div class="blog-container">
       <nav class="breadcrumb">
-        <a href="./index.html" class="breadcrumb-home" aria-label="Home">
+        <a href="/" class="breadcrumb-home" aria-label="Home">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M9.828 3h3.982a.19.19 0 0 1 .169.276L13.092 5H14.5a.5.5 0 0 1 .5.5v.5h-15v-.5a.5.5 0 0 1 .5-.5h1.408l-.887-1.724A.19.19 0 0 1 1.19 3h3.982c.18 0 .345.098.43.253L6.82 5h2.36l1.218-1.747A.49.49 0 0 1 9.828 3M13.5 6.5H.5v6a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5z"/></svg>
         </a>
         <span class="breadcrumb-sep">/</span>
-        <a href="./blog.html" class="breadcrumb-link">blog</a>
+        <a href="/blog" class="breadcrumb-link">blog</a>
       </nav>
 
       <div class="post-cards" id="postCards">
@@ -31,7 +31,7 @@
       (async function () {
         const container = document.getElementById('postCards');
         try {
-          const res = await fetch('./blog/posts.json');
+          const res = await fetch('./posts.json');
           if (!res.ok) throw new Error('Failed to load posts');
           const posts = await res.json();
           posts.sort((a, b) => b.date.localeCompare(a.date));
@@ -45,7 +45,7 @@
           for (const post of posts) {
             const a = document.createElement('a');
             a.className = 'post-card';
-            a.href = `./blog/post.html?slug=${encodeURIComponent(post.slug)}`;
+            a.href = `./post.html?slug=${encodeURIComponent(post.slug)}`;
 
             const title = document.createElement('h2');
             title.className = 'post-card-title';
