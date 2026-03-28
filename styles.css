@@ -61,6 +61,13 @@ body {
   font-size: 1.5rem;
 }
 
+.skill-icons {
+  margin-top: 16px;
+  height: 48px;
+  max-width: fit-content;
+  align-self: flex-start;
+}
+
 /* ---- Social icon row ---- */
 .icon-row {
   display: flex;
