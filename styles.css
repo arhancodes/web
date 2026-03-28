@@ -63,9 +63,11 @@ body {
 
 .skill-icons {
   margin-top: 16px;
-  height: 48px;
-  max-width: fit-content;
+  height: 36px;
+  width: auto;
+  max-width: 100%;
   align-self: flex-start;
+  object-fit: contain;
 }
 
 /* ---- Social icon row ---- */
