@@ -1,0 +1,58 @@
+<p>if you play fortnite, you've probably seen leakers on twitter posting upcoming skins and shop rotations before they officially drop. ever wondered how that works? i built a system that tracks all of it automatically</p>
+
+<h2>what it actually does</h2>
+
+<p>the project is pretty simple at its core. a github actions workflow runs every 30 minutes, fetches data from fortnite's public API endpoints, and commits the changes to a git repo. that's it. no reverse engineering, no game file extraction. just publicly available data, tracked over time</p>
+
+<p>the magic is in the diff. because everything is version-controlled, you can look at any commit and see exactly what changed — a new skin got added, the shop rotated, a playlist went live. git becomes a time machine for fortnite's data</p>
+
+<h2>what gets tracked</h2>
+
+<p>right now it monitors 7 different data sources:</p>
+
+<ul>
+<li>battle royale cosmetics (skins, emotes, pickaxes, everything)</li>
+<li>item shop rotations</li>
+<li>in-game news across different modes</li>
+<li>available playlists and gamemodes</li>
+<li>AES encryption keys</li>
+<li>player banners</li>
+<li>build version metadata</li>
+</ul>
+
+<p>all of this comes from <a href="https://fortnite-api.com">fortnite-api.com</a>, which aggregates fortnite's public API data into endpoints</p>
+
+<h2>the setup</h2>
+
+<p>the whole thing is written in typescript. the fetch logic is straightforward, hit the API, compare with what's already in the <code>data/</code> directory, and if something changed, write the new JSON and let git pick up the diff:</p>
+
+<pre><code>// simplified version of what happens each run
+const endpoints = [
+  { name: "cosmetics", url: "/v2/cosmetics/br" },
+  { name: "shop", url: "/v2/shop/br" },
+  { name: "news", url: "/v2/news" },
+  // ... more endpoints
+];
+
+for (const endpoint of endpoints) {
+  const response = await fetch(BASE_URL + endpoint.url);
+  const data = await response.json();
+  writeFileSync(`data/${endpoint.name}.json`, JSON.stringify(data, null, 2));
+}</code></pre>
+
+<p>the github action handles the rest (if any files changed, it commits and pushes automatically) </p>
+
+<h2>why git is perfect for this</h2>
+
+<p>i could've stored this in a database. but git gives you something a database doesn't: a complete, browsable history of every single change with timestamps. want to know when a specific skin was first added to the files? <code>git log --all -p -- data/cosmetics.json</code> and search for it</p>
+
+<p>the commit messages are automated too, so you can scan through the history and immediately see what changed without opening any files</p>
+
+<h2>running it yourself</h2>
+
+<p>if you want to try it locally:</p>
+
+<pre><code>npm install
+npm run fetch</code></pre>
+
+<p>that'll pull the latest data from all endpoints into your local <code>data/</code> directory. fork the repo and enable github actions if you want your own automated tracker</p>
