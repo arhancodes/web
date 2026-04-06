@@ -27,13 +27,9 @@ async function loadStatus() {
     const json = await res.json();
     const status = json.data.discord_status;
 
-    if (status === 'online' || status === 'idle' || status === 'dnd') {
-      statusText.textContent = 'online';
-      statusDot.classList.add('online');
-    } else {
-      statusText.textContent = 'offline';
-      statusDot.classList.remove('online');
-    }
+    statusText.textContent = status;
+    statusDot.className = 'status-dot';
+    if (status !== 'offline') statusDot.classList.add(status);
   } catch {
     statusText.textContent = 'offline';
     statusDot.classList.remove('online');

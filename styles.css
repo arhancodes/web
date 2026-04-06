@@ -144,9 +144,9 @@ body {
   font-size: 1.5rem;
 }
 
-.status-dot.online {
-  background: var(--good);
-}
+.status-dot.online { background: #22c55e; }
+.status-dot.idle { background: #facc15; }
+.status-dot.dnd { background: #ef4444; }
 
 /* ---- Bottom nav ---- */
 .bottom-nav {
