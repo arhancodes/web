@@ -17,6 +17,8 @@ setInterval(updateTime, 15000);
 /* ---- Discord status ---- */
 const statusIcon = document.getElementById('statusIcon');
 const statusText = document.getElementById('statusText');
+const activityPill = document.getElementById('activityPill');
+const activityText = document.getElementById('activityText');
 
 const STATUS_ICONS = {
   online: '<svg viewBox="0 0 16 16" fill="#22c55e"><circle cx="8" cy="8" r="8"/></svg>',
@@ -32,13 +34,24 @@ async function loadStatus() {
     const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
     if (!res.ok) throw new Error(`Lanyard API ${res.status}`);
     const json = await res.json();
-    const status = json.data.discord_status;
+    const data = json.data;
+    const status = data.discord_status;
 
     statusText.textContent = status;
     statusIcon.innerHTML = STATUS_ICONS[status] || STATUS_ICONS.offline;
+
+    // Show game activity (type 0 = Playing)
+    const game = data.activities?.find(a => a.type === 0);
+    if (game && activityPill && activityText) {
+      activityText.textContent = `playing ${game.name}`;
+      activityPill.style.display = '';
+    } else if (activityPill) {
+      activityPill.style.display = 'none';
+    }
   } catch {
     statusText.textContent = 'offline';
     statusIcon.innerHTML = STATUS_ICONS.offline;
+    if (activityPill) activityPill.style.display = 'none';
   }
 }
 
