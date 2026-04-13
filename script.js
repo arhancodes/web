@@ -19,6 +19,8 @@ const statusIcon = document.getElementById('statusIcon');
 const statusText = document.getElementById('statusText');
 const activityPill = document.getElementById('activityPill');
 const activityText = document.getElementById('activityText');
+const spotifyPill = document.getElementById('spotifyPill');
+const spotifyText = document.getElementById('spotifyText');
 
 const STATUS_ICONS = {
   online: '<svg viewBox="0 0 16 16" fill="#22c55e"><circle cx="8" cy="8" r="8"/></svg>',
@@ -48,10 +50,19 @@ async function loadStatus() {
     } else if (activityPill) {
       activityPill.style.display = 'none';
     }
+
+    // Show Spotify activity
+    if (data.spotify && spotifyPill && spotifyText) {
+      spotifyText.textContent = `${data.spotify.song} — ${data.spotify.artist}`;
+      spotifyPill.style.display = '';
+    } else if (spotifyPill) {
+      spotifyPill.style.display = 'none';
+    }
   } catch {
     statusText.textContent = 'offline';
     statusIcon.innerHTML = STATUS_ICONS.offline;
     if (activityPill) activityPill.style.display = 'none';
+    if (spotifyPill) spotifyPill.style.display = 'none';
   }
 }
 
