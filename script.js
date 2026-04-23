@@ -33,47 +33,85 @@ const STATUS_ICONS = {
   offline: '<svg viewBox="0 0 16 16" fill="#666"><circle cx="8" cy="8" r="8"/><circle cx="8" cy="8" r="4" fill="#292524"/></svg>',
 };
 
+const activityCard = document.getElementById('activityCard');
+const activityCardIcon = document.getElementById('activityCardIcon');
+const activityCardName = document.getElementById('activityCardName');
+const activityCardDetails = document.getElementById('activityCardDetails');
+const activityCardState = document.getElementById('activityCardState');
+const activityCardTime = document.getElementById('activityCardTime');
+
 let currentGameActivity = null;
-let expandedView = false;
+
+function pad(n) { return n < 10 ? `0${n}` : `${n}`; }
 
 function formatElapsed(startMs) {
-  const secs = Math.floor((Date.now() - startMs) / 1000);
+  const secs = Math.max(0, Math.floor((Date.now() - startMs) / 1000));
   const hrs = Math.floor(secs / 3600);
   const mins = Math.floor((secs % 3600) / 60);
-  if (hrs > 0) return `${hrs}h ${mins}m`;
-  if (mins > 0) return `${mins}m`;
-  return `${secs}s`;
+  const s = secs % 60;
+  if (hrs > 0) return `${hrs}:${pad(mins)}:${pad(s)} elapsed`;
+  return `${pad(mins)}:${pad(s)} elapsed`;
 }
 
-function renderGamePill() {
-  if (!currentGameActivity || !activityText) return;
+function getAssetUrl(activity, assetKey) {
+  const asset = activity?.assets?.[assetKey];
+  if (!asset) return null;
+  if (asset.startsWith('mp:')) {
+    return `https://media.discordapp.net/${asset.slice(3)}`;
+  }
+  if (activity.application_id) {
+    return `https://cdn.discordapp.com/app-assets/${activity.application_id}/${asset}.png`;
+  }
+  return null;
+}
+
+function renderCardContent() {
+  if (!currentGameActivity) return;
   const a = currentGameActivity;
 
-  if (expandedView) {
-    const lines = [];
-    if (a.details) lines.push(a.details);
-    if (a.state) lines.push(a.state);
-    if (a.timestamps?.start) lines.push(`for ${formatElapsed(a.timestamps.start)}`);
-    activityText.textContent = lines.length ? `${a.name} — ${lines.join(' • ')}` : `playing ${a.name}`;
+  activityCardName.textContent = a.name || '';
+  activityCardDetails.textContent = a.details || '';
+  activityCardState.textContent = a.state || '';
+  activityCardTime.textContent = a.timestamps?.start ? formatElapsed(a.timestamps.start) : '';
+
+  const iconUrl = getAssetUrl(a, 'large_image');
+  if (iconUrl) {
+    activityCardIcon.innerHTML = `<img src="${iconUrl}" alt="${a.name || ''}" />`;
   } else {
-    activityText.textContent = `playing ${a.name}`;
+    activityCardIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#a8a29e" style="width:32px;height:32px;"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`;
   }
+}
+
+function toggleCard(open) {
+  if (!activityCard) return;
+  if (open === undefined) open = !activityCard.classList.contains('open');
+  activityCard.classList.toggle('open', open);
+  activityCard.setAttribute('aria-hidden', String(!open));
 }
 
 if (activityPill) {
-  activityPill.addEventListener('click', () => {
+  activityPill.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (!currentGameActivity) return;
-    expandedView = !expandedView;
-    renderGamePill();
+    renderCardContent();
+    toggleCard();
   });
 }
 
-// Update elapsed time every 30s when expanded
-setInterval(() => {
-  if (expandedView && currentGameActivity?.timestamps?.start) {
-    renderGamePill();
+// Close card when clicking outside
+document.addEventListener('click', (e) => {
+  if (!activityCard?.classList.contains('open')) return;
+  if (!activityCard.contains(e.target) && e.target !== activityPill && !activityPill.contains(e.target)) {
+    toggleCard(false);
   }
-}, 30000);
+});
+
+// Update elapsed time every second when card is open
+setInterval(() => {
+  if (activityCard?.classList.contains('open') && currentGameActivity?.timestamps?.start) {
+    activityCardTime.textContent = formatElapsed(currentGameActivity.timestamps.start);
+  }
+}, 1000);
 
 async function loadStatus() {
   if (!statusText || !statusIcon) return;
@@ -111,11 +149,12 @@ async function loadStatus() {
       currentGameActivity = game;
       activityPill.style.display = '';
       activityPill.style.cursor = 'pointer';
-      renderGamePill();
+      activityText.textContent = `playing ${game.name}`;
+      if (activityCard?.classList.contains('open')) renderCardContent();
     } else if (activityPill) {
       currentGameActivity = null;
-      expandedView = false;
       activityPill.style.display = 'none';
+      toggleCard(false);
     }
 
     // Show Spotify activity
