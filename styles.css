@@ -157,30 +157,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding-left: 32px;
 }
 
 .bottom-nav li {
-  position: relative;
   width: fit-content;
   color: var(--stone-300);
-}
-
-.bottom-nav li::before {
-  content: '\2192';
-  position: absolute;
-  left: -32px;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: left 0.2s ease;
-  pointer-events: none;
-  display: block;
-  width: 16px;
-  height: 16px;
-}
-
-.bottom-nav li:hover::before {
-  left: -24px;
 }
 
 .bottom-nav a {
