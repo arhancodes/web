@@ -1,4 +1,5 @@
 const DISCORD_USER_ID = '928558715974586399';
+const WATCHING_API = 'https://streaming-tracker.arhan-harchandani.workers.dev';
 
 /* ---- Time display ---- */
 const timeDisplay = document.getElementById('timeDisplay');
@@ -199,3 +200,29 @@ async function loadStatus() {
 
 loadStatus();
 setInterval(loadStatus, 60000);
+
+/* ---- Prime Video tracker (worker API) ---- */
+async function loadWatching() {
+  if (!WATCHING_API || !watchingPill || !watchingText) return;
+  try {
+    const res = await fetch(WATCHING_API + '?t=' + Date.now());
+    if (!res.ok) throw new Error(`watching API ${res.status}`);
+    const data = await res.json();
+    // Discord watching pill takes priority if one is already shown
+    const discordPillOpen = watchingPill.style.display !== 'none' && watchingText.textContent && !watchingText.dataset.source?.startsWith('prime');
+    if (data && data.title) {
+      if (discordPillOpen) return;
+      watchingText.textContent = `watching ${data.title} on ${data.service || 'Prime Video'}`;
+      watchingText.dataset.source = 'prime';
+      watchingPill.style.display = '';
+    } else if (watchingText.dataset.source === 'prime') {
+      watchingText.dataset.source = '';
+      watchingPill.style.display = 'none';
+    }
+  } catch {
+    // ignore
+  }
+}
+
+loadWatching();
+setInterval(loadWatching, 30000);
