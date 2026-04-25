@@ -34,10 +34,16 @@ body {
 }
 
 /* ---- Heading ---- */
+.hero-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
 .heading {
-  font-size: 3.75rem;
+  font-size: 2.25rem;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1;
 }
 
 .name-gradient {
@@ -62,11 +68,9 @@ body {
 }
 
 .skill-icons {
-  margin-top: 16px;
   height: 36px;
   width: auto;
   max-width: 100%;
-  align-self: flex-start;
   object-fit: contain;
 }
 
@@ -275,7 +279,7 @@ body {
 /* ---- Bottom nav ---- */
 .bottom-nav {
   margin-top: 48px;
-  font-size: 1.25rem;
+  font-size: 2.5rem;
 }
 
 .bottom-nav ul {
