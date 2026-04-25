@@ -209,9 +209,10 @@ async function loadWatching() {
     const res = await fetch(WATCHING_API + '?t=' + Date.now());
     if (!res.ok) throw new Error(`watching API ${res.status}`);
     const data = await res.json();
-    // Discord watching pill takes priority if one is already shown
+    const FRESH_MS = 90 * 1000;
+    const isFresh = data && data.updatedAt && (Date.now() - data.updatedAt < FRESH_MS);
     const discordPillOpen = watchingPill.style.display !== 'none' && watchingText.textContent && !watchingText.dataset.source?.startsWith('prime');
-    if (data && data.title) {
+    if (data && data.title && isFresh) {
       if (discordPillOpen) return;
       watchingText.textContent = `watching ${data.title} on ${data.service || 'Prime Video'}`;
       watchingText.dataset.source = 'prime';
