@@ -228,3 +228,36 @@ async function loadWatching() {
 
 loadWatching();
 setInterval(loadWatching, 30000);
+
+/* ---- Song preview play button ---- */
+const playBtn = document.getElementById('playBtn');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const songPreview = document.getElementById('songPreview');
+
+function setPlayingUI(playing) {
+  if (playing) {
+    playBtn.classList.add('playing');
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = '';
+  } else {
+    playBtn.classList.remove('playing');
+    playIcon.style.display = '';
+    pauseIcon.style.display = 'none';
+  }
+}
+
+if (playBtn && songPreview) {
+  songPreview.addEventListener('play', () => setPlayingUI(true));
+  songPreview.addEventListener('pause', () => setPlayingUI(false));
+  songPreview.addEventListener('ended', () => setPlayingUI(false));
+
+  playBtn.addEventListener('click', () => {
+    if (songPreview.paused) {
+      songPreview.play().catch(() => setPlayingUI(false));
+    } else {
+      songPreview.pause();
+      songPreview.currentTime = 0;
+    }
+  });
+}
