@@ -283,8 +283,13 @@ if (playBtn && songPreview) {
     if (songPreview.paused) {
       songPreview.pause();
       songPreview.currentTime = 0;
+      const startFromZero = () => {
+        songPreview.removeEventListener('loadeddata', startFromZero);
+        songPreview.currentTime = 0;
+        songPreview.play().catch(() => setPlayingUI(false));
+      };
+      songPreview.addEventListener('loadeddata', startFromZero);
       songPreview.load();
-      songPreview.play().catch(() => setPlayingUI(false));
     } else {
       songPreview.pause();
       songPreview.currentTime = 0;
