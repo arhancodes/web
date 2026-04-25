@@ -161,8 +161,9 @@ async function loadStatus() {
     if (watching && watchingPill && watchingText) {
       const title = watching.details || watching.state || watching.name;
       watchingText.textContent = `watching ${title} on ${watching.name}`;
+      watchingText.dataset.source = 'discord';
       watchingPill.style.display = '';
-    } else if (watchingPill) {
+    } else if (watchingPill && watchingText.dataset.source !== 'prime') {
       watchingPill.style.display = 'none';
     }
 
