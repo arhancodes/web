@@ -200,7 +200,7 @@ async function loadStatus() {
 }
 
 loadStatus();
-setInterval(loadStatus, 60000);
+setInterval(loadStatus, 15000);
 
 /* ---- Prime Video tracker (worker API) ---- */
 async function loadWatching() {
