@@ -95,27 +95,7 @@ body {
 .icon-github:hover svg { fill: #2da44e; }
 .icon-linkedin:hover svg { fill: #0077B5; }
 
-.icon-play {
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  transition: color 0.15s;
-}
-
-.icon-play svg {
-  width: 30px;
-  height: 30px;
-  fill: currentColor;
-  transition: fill 0.15s;
-}
-
-.icon-play:hover svg { fill: #ff5500; }
-.icon-play.playing svg { fill: #ff5500; }
+#playBtn.playing { color: var(--text); }
 
 /* ---- Status row (pills) ---- */
 .status-row {
