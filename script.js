@@ -264,7 +264,6 @@ const pauseIcon = document.getElementById('pauseIcon');
 const scPlayer = document.getElementById('scPlayer');
 
 let scWidget = null;
-let scReady = false;
 let scIsPlaying = false;
 
 function setPlayingUI(playing) {
@@ -280,43 +279,29 @@ function setPlayingUI(playing) {
   }
 }
 
-function loadSCApi() {
-  if (window.SC && window.SC.Widget) return Promise.resolve();
-  return new Promise((resolve) => {
-    const tag = document.createElement('script');
-    tag.src = 'https://w.soundcloud.com/player/api.js';
-    tag.onload = resolve;
-    document.head.appendChild(tag);
-  });
-}
-
-async function ensureSCWidget() {
-  if (scWidget) return scWidget;
-  scPlayer.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(SC_TRACK_URL)}&auto_play=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false&show_comments=false&show_playcount=false&show_user=false&hide_related=true`;
-  await loadSCApi();
-  scWidget = SC.Widget(scPlayer);
-  await new Promise((resolve) => {
-    scWidget.bind(SC.Widget.Events.READY, () => { scReady = true; resolve(); });
-  });
-  scWidget.bind(SC.Widget.Events.PLAY, () => setPlayingUI(true));
-  scWidget.bind(SC.Widget.Events.PAUSE, () => setPlayingUI(false));
-  scWidget.bind(SC.Widget.Events.FINISH, () => setPlayingUI(false));
-  return scWidget;
-}
-
 if (playBtn && scPlayer) {
-  playBtn.addEventListener('click', async () => {
-    setPlayingUI(true);
-    try {
-      const w = await ensureSCWidget();
-      if (scIsPlaying) {
-        w.pause();
-      } else {
-        w.seekTo(0);
-        w.play();
-      }
-    } catch {
-      setPlayingUI(false);
+  // Preload widget on page load (don't wait for click)
+  scPlayer.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(SC_TRACK_URL)}&auto_play=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false&show_comments=false&show_playcount=false&show_user=false&hide_related=true`;
+
+  const apiTag = document.createElement('script');
+  apiTag.src = 'https://w.soundcloud.com/player/api.js';
+  apiTag.onload = () => {
+    scWidget = SC.Widget(scPlayer);
+    scWidget.bind(SC.Widget.Events.READY, () => {
+      scWidget.bind(SC.Widget.Events.PLAY, () => setPlayingUI(true));
+      scWidget.bind(SC.Widget.Events.PAUSE, () => setPlayingUI(false));
+      scWidget.bind(SC.Widget.Events.FINISH, () => setPlayingUI(false));
+    });
+  };
+  document.head.appendChild(apiTag);
+
+  playBtn.addEventListener('click', () => {
+    if (!scWidget) return;
+    if (scIsPlaying) {
+      scWidget.pause();
+    } else {
+      scWidget.seekTo(0);
+      scWidget.play();
     }
   });
 }
