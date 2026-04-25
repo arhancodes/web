@@ -256,13 +256,17 @@ async function loadWatching() {
 loadWatching();
 setInterval(loadWatching, 30000);
 
-/* ---- Song preview play button ---- */
+/* ---- Song play button (YouTube hidden iframe) ---- */
+const YT_VIDEO_ID = 'nmnDQeNPcvE';
 const playBtn = document.getElementById('playBtn');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
-const songPreview = document.getElementById('songPreview');
+const ytPlayer = document.getElementById('ytPlayer');
+
+let isPlaying = false;
 
 function setPlayingUI(playing) {
+  isPlaying = playing;
   if (playing) {
     playBtn.classList.add('playing');
     playIcon.style.display = 'none';
@@ -274,25 +278,14 @@ function setPlayingUI(playing) {
   }
 }
 
-if (playBtn && songPreview) {
-  songPreview.addEventListener('play', () => setPlayingUI(true));
-  songPreview.addEventListener('pause', () => setPlayingUI(false));
-  songPreview.addEventListener('ended', () => setPlayingUI(false));
-
+if (playBtn && ytPlayer) {
   playBtn.addEventListener('click', () => {
-    if (songPreview.paused) {
-      songPreview.pause();
-      songPreview.currentTime = 0;
-      const startFromZero = () => {
-        songPreview.removeEventListener('loadeddata', startFromZero);
-        songPreview.currentTime = 0;
-        songPreview.play().catch(() => setPlayingUI(false));
-      };
-      songPreview.addEventListener('loadeddata', startFromZero);
-      songPreview.load();
+    if (isPlaying) {
+      ytPlayer.src = '';
+      setPlayingUI(false);
     } else {
-      songPreview.pause();
-      songPreview.currentTime = 0;
+      ytPlayer.src = `https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1`;
+      setPlayingUI(true);
     }
   });
 }
