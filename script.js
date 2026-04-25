@@ -256,17 +256,19 @@ async function loadWatching() {
 loadWatching();
 setInterval(loadWatching, 30000);
 
-/* ---- Song play button (YouTube hidden iframe) ---- */
-const YT_VIDEO_ID = 'nmnDQeNPcvE';
+/* ---- Song play button (SoundCloud hidden widget) ---- */
+const SC_TRACK_URL = 'https://soundcloud.com/user-654779970/trapn-early-yungslookey';
 const playBtn = document.getElementById('playBtn');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
-const ytPlayer = document.getElementById('ytPlayer');
+const scPlayer = document.getElementById('scPlayer');
 
-let isPlaying = false;
+let scWidget = null;
+let scReady = false;
+let scIsPlaying = false;
 
 function setPlayingUI(playing) {
-  isPlaying = playing;
+  scIsPlaying = playing;
   if (playing) {
     playBtn.classList.add('playing');
     playIcon.style.display = 'none';
@@ -278,14 +280,43 @@ function setPlayingUI(playing) {
   }
 }
 
-if (playBtn && ytPlayer) {
-  playBtn.addEventListener('click', () => {
-    if (isPlaying) {
-      ytPlayer.src = '';
+function loadSCApi() {
+  if (window.SC && window.SC.Widget) return Promise.resolve();
+  return new Promise((resolve) => {
+    const tag = document.createElement('script');
+    tag.src = 'https://w.soundcloud.com/player/api.js';
+    tag.onload = resolve;
+    document.head.appendChild(tag);
+  });
+}
+
+async function ensureSCWidget() {
+  if (scWidget) return scWidget;
+  scPlayer.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(SC_TRACK_URL)}&auto_play=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false&show_comments=false&show_playcount=false&show_user=false&hide_related=true`;
+  await loadSCApi();
+  scWidget = SC.Widget(scPlayer);
+  await new Promise((resolve) => {
+    scWidget.bind(SC.Widget.Events.READY, () => { scReady = true; resolve(); });
+  });
+  scWidget.bind(SC.Widget.Events.PLAY, () => setPlayingUI(true));
+  scWidget.bind(SC.Widget.Events.PAUSE, () => setPlayingUI(false));
+  scWidget.bind(SC.Widget.Events.FINISH, () => setPlayingUI(false));
+  return scWidget;
+}
+
+if (playBtn && scPlayer) {
+  playBtn.addEventListener('click', async () => {
+    setPlayingUI(true);
+    try {
+      const w = await ensureSCWidget();
+      if (scIsPlaying) {
+        w.pause();
+      } else {
+        w.seekTo(0);
+        w.play();
+      }
+    } catch {
       setPlayingUI(false);
-    } else {
-      ytPlayer.src = `https://www.youtube.com/embed/${YT_VIDEO_ID}?autoplay=1&controls=0&modestbranding=1&rel=0&playsinline=1`;
-      setPlayingUI(true);
     }
   });
 }
