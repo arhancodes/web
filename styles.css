@@ -35,9 +35,9 @@ body {
 
 /* ---- Heading ---- */
 .heading {
-  font-size: 2.5rem;
+  font-size: 3.75rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.15;
 }
 
 .name-gradient {
@@ -62,10 +62,11 @@ body {
 }
 
 .skill-icons {
-  margin-top: 8px;
+  margin-top: 16px;
   height: 36px;
   width: auto;
   max-width: 100%;
+  align-self: flex-start;
   object-fit: contain;
 }
 
