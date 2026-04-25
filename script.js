@@ -256,18 +256,13 @@ async function loadWatching() {
 loadWatching();
 setInterval(loadWatching, 30000);
 
-/* ---- Song play button (SoundCloud hidden widget) ---- */
-const SC_TRACK_URL = 'https://soundcloud.com/user-654779970/trapn-early-yungslookey';
+/* ---- Song play button (HTML5 audio, preloaded for instant play) ---- */
 const playBtn = document.getElementById('playBtn');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
-const scPlayer = document.getElementById('scPlayer');
-
-let scWidget = null;
-let scIsPlaying = false;
+const songPreview = document.getElementById('songPreview');
 
 function setPlayingUI(playing) {
-  scIsPlaying = playing;
   if (playing) {
     playBtn.classList.add('playing');
     playIcon.style.display = 'none';
@@ -279,29 +274,21 @@ function setPlayingUI(playing) {
   }
 }
 
-if (playBtn && scPlayer) {
-  // Preload widget on page load (don't wait for click)
-  scPlayer.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(SC_TRACK_URL)}&auto_play=false&visual=false&buying=false&liking=false&download=false&sharing=false&show_artwork=false&show_comments=false&show_playcount=false&show_user=false&hide_related=true`;
+if (playBtn && songPreview) {
+  // Force aggressive preload
+  songPreview.load();
 
-  const apiTag = document.createElement('script');
-  apiTag.src = 'https://w.soundcloud.com/player/api.js';
-  apiTag.onload = () => {
-    scWidget = SC.Widget(scPlayer);
-    scWidget.bind(SC.Widget.Events.READY, () => {
-      scWidget.bind(SC.Widget.Events.PLAY, () => setPlayingUI(true));
-      scWidget.bind(SC.Widget.Events.PAUSE, () => setPlayingUI(false));
-      scWidget.bind(SC.Widget.Events.FINISH, () => setPlayingUI(false));
-    });
-  };
-  document.head.appendChild(apiTag);
+  songPreview.addEventListener('play', () => setPlayingUI(true));
+  songPreview.addEventListener('pause', () => setPlayingUI(false));
+  songPreview.addEventListener('ended', () => setPlayingUI(false));
 
   playBtn.addEventListener('click', () => {
-    if (!scWidget) return;
-    if (scIsPlaying) {
-      scWidget.pause();
+    if (songPreview.paused) {
+      songPreview.currentTime = 0;
+      songPreview.play().catch(() => setPlayingUI(false));
     } else {
-      scWidget.seekTo(0);
-      scWidget.play();
+      songPreview.pause();
+      songPreview.currentTime = 0;
     }
   });
 }
