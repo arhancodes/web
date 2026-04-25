@@ -138,69 +138,96 @@ setInterval(() => {
   if (start) activityCardTime.textContent = formatElapsed(start);
 }, 1000);
 
-async function loadStatus() {
+function renderStatus(data) {
   if (!statusText || !statusIcon) return;
-
-  try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
-    if (!res.ok) throw new Error(`Lanyard API ${res.status}`);
-    const json = await res.json();
-    const data = json.data;
-    const status = data.discord_status;
-
-    statusText.textContent = status;
-    statusIcon.innerHTML = STATUS_ICONS[status] || STATUS_ICONS.offline;
-
-    const activities = data.activities || [];
-
-    // Check for streaming service (type 3 = Watching, or PreMiD activity name matches)
-    const watching = activities.find(a =>
-      a.type === 3 || (a.name && STREAMING_SERVICES.includes(a.name.toLowerCase()))
-    );
-
-    if (watching && watchingPill && watchingText) {
-      const title = watching.details || watching.state || watching.name;
-      watchingText.textContent = `watching ${title} on ${watching.name}`;
-      watchingText.dataset.source = 'discord';
-      watchingPill.style.display = '';
-    } else if (watchingPill && watchingText.dataset.source !== 'prime') {
-      watchingPill.style.display = 'none';
-    }
-
-    // Show game activity (type 0 = Playing) but exclude streaming services
-    const game = activities.find(a =>
-      a.type === 0 && !STREAMING_SERVICES.includes((a.name || '').toLowerCase())
-    );
-    if (game && activityPill && activityText) {
-      currentGameActivity = game;
-      activityPill.style.display = '';
-      activityPill.style.cursor = 'pointer';
-      activityText.textContent = `playing ${game.name}`;
-      if (activityCard?.classList.contains('open')) renderCardContent();
-    } else if (activityPill) {
-      currentGameActivity = null;
-      activityPill.style.display = 'none';
-      toggleCard(false);
-    }
-
-    // Show Spotify activity
-    if (data.spotify && spotifyPill && spotifyText) {
-      spotifyText.textContent = `${data.spotify.song} — ${data.spotify.artist}`;
-      spotifyPill.style.display = '';
-    } else if (spotifyPill) {
-      spotifyPill.style.display = 'none';
-    }
-  } catch {
+  if (!data) {
     statusText.textContent = 'offline';
     statusIcon.innerHTML = STATUS_ICONS.offline;
     if (activityPill) activityPill.style.display = 'none';
     if (spotifyPill) spotifyPill.style.display = 'none';
-    if (watchingPill) watchingPill.style.display = 'none';
+    if (watchingPill && watchingText.dataset.source !== 'prime') watchingPill.style.display = 'none';
+    return;
+  }
+  const status = data.discord_status;
+  statusText.textContent = status;
+  statusIcon.innerHTML = STATUS_ICONS[status] || STATUS_ICONS.offline;
+
+  const activities = data.activities || [];
+
+  const watching = activities.find(a =>
+    a.type === 3 || (a.name && STREAMING_SERVICES.includes(a.name.toLowerCase()))
+  );
+  if (watching && watchingPill && watchingText) {
+    const title = watching.details || watching.state || watching.name;
+    watchingText.textContent = `watching ${title} on ${watching.name}`;
+    watchingText.dataset.source = 'discord';
+    watchingPill.style.display = '';
+  } else if (watchingPill && watchingText.dataset.source !== 'prime') {
+    watchingPill.style.display = 'none';
+  }
+
+  const game = activities.find(a =>
+    a.type === 0 && !STREAMING_SERVICES.includes((a.name || '').toLowerCase())
+  );
+  if (game && activityPill && activityText) {
+    currentGameActivity = game;
+    activityPill.style.display = '';
+    activityPill.style.cursor = 'pointer';
+    activityText.textContent = `playing ${game.name}`;
+    if (activityCard?.classList.contains('open')) renderCardContent();
+  } else if (activityPill) {
+    currentGameActivity = null;
+    activityPill.style.display = 'none';
+    toggleCard(false);
+  }
+
+  if (data.spotify && spotifyPill && spotifyText) {
+    spotifyText.textContent = `${data.spotify.song} — ${data.spotify.artist}`;
+    spotifyPill.style.display = '';
+  } else if (spotifyPill) {
+    spotifyPill.style.display = 'none';
   }
 }
 
-loadStatus();
-setInterval(loadStatus, 15000);
+let lanyardWs = null;
+let lanyardHeartbeat = null;
+let lanyardReconnectDelay = 1000;
+
+function connectLanyard() {
+  if (lanyardWs && lanyardWs.readyState <= 1) return;
+  lanyardWs = new WebSocket('wss://api.lanyard.rest/socket');
+
+  lanyardWs.addEventListener('open', () => {
+    lanyardReconnectDelay = 1000;
+    lanyardWs.send(JSON.stringify({
+      op: 2,
+      d: { subscribe_to_id: DISCORD_USER_ID },
+    }));
+  });
+
+  lanyardWs.addEventListener('message', (e) => {
+    let msg;
+    try { msg = JSON.parse(e.data); } catch { return; }
+    if (msg.op === 1 && msg.d?.heartbeat_interval) {
+      clearInterval(lanyardHeartbeat);
+      lanyardHeartbeat = setInterval(() => {
+        if (lanyardWs?.readyState === 1) lanyardWs.send(JSON.stringify({ op: 3 }));
+      }, msg.d.heartbeat_interval);
+    } else if (msg.t === 'INIT_STATE' || msg.t === 'PRESENCE_UPDATE') {
+      renderStatus(msg.d);
+    }
+  });
+
+  lanyardWs.addEventListener('close', () => {
+    clearInterval(lanyardHeartbeat);
+    setTimeout(connectLanyard, lanyardReconnectDelay);
+    lanyardReconnectDelay = Math.min(lanyardReconnectDelay * 2, 30000);
+  });
+
+  lanyardWs.addEventListener('error', () => lanyardWs.close());
+}
+
+connectLanyard();
 
 /* ---- Prime Video tracker (worker API) ---- */
 async function loadWatching() {
@@ -254,7 +281,9 @@ if (playBtn && songPreview) {
 
   playBtn.addEventListener('click', () => {
     if (songPreview.paused) {
+      songPreview.pause();
       songPreview.currentTime = 0;
+      songPreview.load();
       songPreview.play().catch(() => setPlayingUI(false));
     } else {
       songPreview.pause();
