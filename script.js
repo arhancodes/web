@@ -254,6 +254,7 @@ if (playBtn && songPreview) {
 
   playBtn.addEventListener('click', () => {
     if (songPreview.paused) {
+      songPreview.currentTime = 0;
       songPreview.play().catch(() => setPlayingUI(false));
     } else {
       songPreview.pause();
