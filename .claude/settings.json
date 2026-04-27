@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "_claude_learn": true,
+        "hooks": [
+          {
+            "command": "python3 -c 'import json,sys,os; d=json.loads(os.environ.get(\"CLAUDE_TOOL_INPUT\",\"{}\")); c=d.get(\"content\",\"\"); lines=c.count(chr(10))+1; sys.exit(2 if lines<40 and os.path.exists(d.get(\"file_path\",\"\")) else 0)' 2>/dev/null; exit 0",
+            "type": "command"
+          }
+        ],
+        "matcher": "Write"
+      }
+    ]
+  }
+}
