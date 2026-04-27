@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brain MRI Preview</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        background: #0a0a0a;
+        color: #fff;
+        font-family: 'Roboto Slab', ui-serif, Georgia, serif;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      h1 {
+        font-size: 1.25rem;
+        font-weight: 400;
+        color: #a8a29e;
+        margin-bottom: 12px;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+      }
+      .label {
+        color: #57534e;
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-top: 12px;
+      }
+      #brain {
+        display: block;
+      }
+      .legend {
+        position: fixed;
+        bottom: 16px;
+        left: 16px;
+        font-size: 0.7rem;
+        color: #57534e;
+        letter-spacing: 0.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>currently thinking about</h1>
+    <canvas id="brain" width="700" height="500"></canvas>
+    <div class="label" id="firing"></div>
+    <div class="legend">live · 7 active repos · 47 synapses</div>
+    <script>
+      const canvas = document.getElementById('brain');
+      const ctx = canvas.getContext('2d');
+      const firingEl = document.getElementById('firing');
+
+      // Mock data - in reality pulled from GitHub API
+      const repos = [
+        { name: 'web', size: 24, color: '#7c3aed' },
+        { name: 'tv', size: 18, color: '#22d3ee' },
+        { name: 'fortnite-datamining', size: 28, color: '#f97316' },
+        { name: 'codenames', size: 16, color: '#ec4899' },
+        { name: 'streaming-tracker', size: 14, color: '#10b981' },
+        { name: 'imposter', size: 12, color: '#facc15' },
+        { name: 'flip7', size: 10, color: '#06b6d4' },
+      ];
+
+      const W = canvas.width;
+      const H = canvas.height;
+      const cx = W / 2;
+      const cy = H / 2;
+
+      // Brain-shape positioning - distribute neurons in a brain-like ellipse
+      const neurons = repos.map((r, i) => {
+        const angle = (i / repos.length) * Math.PI * 2;
+        const radiusX = 200 + Math.random() * 40;
+        const radiusY = 130 + Math.random() * 30;
+        return {
+          ...r,
+          x: cx + Math.cos(angle) * radiusX,
+          y: cy + Math.sin(angle) * radiusY,
+          baseX: cx + Math.cos(angle) * radiusX,
+          baseY: cy + Math.sin(angle) * radiusY,
+          phase: Math.random() * Math.PI * 2,
+          activity: 0,
+        };
+      });
+
+      // Synapses - random connections
+      const synapses = [];
+      for (let i = 0; i < neurons.length; i++) {
+        for (let j = i + 1; j < neurons.length; j++) {
+          if (Math.random() > 0.4) {
+            synapses.push({ a: i, b: j, pulse: Math.random() });
+          }
+        }
+      }
+
+      // Pulses traveling along synapses
+      const pulses = [];
+
+      function fireRandomNeuron() {
+        const idx = Math.floor(Math.random() * neurons.length);
+        neurons[idx].activity = 1;
+        firingEl.textContent = neurons[idx].name;
+        // Send pulses to connected neurons
+        synapses.forEach((s) => {
+          if (s.a === idx || s.b === idx) {
+            pulses.push({
+              from: s.a === idx ? idx : s.b,
+              to: s.a === idx ? s.b : idx,
+              t: 0,
+              speed: 0.015 + Math.random() * 0.01,
+              color: neurons[idx].color,
+            });
+          }
+        });
+      }
+
+      setInterval(fireRandomNeuron, 1500);
+      fireRandomNeuron();
+
+      function drawBrainOutline() {
+        ctx.save();
+        ctx.strokeStyle = 'rgba(120, 113, 108, 0.15)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, 240, 165, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        // Inner cortex folds (decorative)
+        ctx.strokeStyle = 'rgba(120, 113, 108, 0.08)';
+        for (let i = 0; i < 5; i++) {
+          ctx.beginPath();
+          ctx.ellipse(cx, cy, 240 - i * 30, 165 - i * 20, 0, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        // Center line (separates hemispheres)
+        ctx.strokeStyle = 'rgba(120, 113, 108, 0.2)';
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - 165);
+        ctx.lineTo(cx, cy + 165);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      let time = 0;
+
+      function animate() {
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.2)';
+        ctx.fillRect(0, 0, W, H);
+
+        time += 0.016;
+
+        drawBrainOutline();
+
+        // Draw synapses
+        ctx.lineWidth = 0.5;
+        synapses.forEach((s) => {
+          const a = neurons[s.a];
+          const b = neurons[s.b];
+          ctx.strokeStyle = 'rgba(168, 162, 158, 0.1)';
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        });
+
+        // Update and draw pulses
+        for (let i = pulses.length - 1; i >= 0; i--) {
+          const p = pulses[i];
+          p.t += p.speed;
+          if (p.t >= 1) {
+            pulses.splice(i, 1);
+            neurons[p.to].activity = Math.max(neurons[p.to].activity, 0.6);
+            continue;
+          }
+          const from = neurons[p.from];
+          const to = neurons[p.to];
+          const x = from.x + (to.x - from.x) * p.t;
+          const y = from.y + (to.y - from.y) * p.t;
+          ctx.fillStyle = p.color;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = p.color;
+          ctx.beginPath();
+          ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+
+        // Update neurons
+        neurons.forEach((n) => {
+          // Subtle drift
+          n.x = n.baseX + Math.cos(time + n.phase) * 4;
+          n.y = n.baseY + Math.sin(time * 0.7 + n.phase) * 3;
+          n.activity *= 0.96;
+        });
+
+        // Draw neurons
+        neurons.forEach((n) => {
+          const glow = n.size + n.activity * 16;
+          // Outer glow
+          ctx.shadowBlur = 20 + n.activity * 30;
+          ctx.shadowColor = n.color;
+          ctx.fillStyle = n.color;
+          ctx.globalAlpha = 0.3 + n.activity * 0.7;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, glow, 0, Math.PI * 2);
+          ctx.fill();
+          // Bright core
+          ctx.globalAlpha = 0.8 + n.activity * 0.2;
+          ctx.fillStyle = '#fff';
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = n.color;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.size * 0.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+          ctx.shadowBlur = 0;
+
+          // Label
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.5 + n.activity * 0.5})`;
+          ctx.font = '10px ui-monospace, monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(n.name, n.x, n.y + n.size + 18);
+        });
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+    </script>
+  </body>
+</html>
