@@ -12,16 +12,23 @@
     <link rel="stylesheet" href="../styles.css" />
   </head>
   <body>
-    <main class="post-page">
-      <a href="/blog" class="back-link">&larr; blog</a>
-      <div class="post-header" id="postHeader">
-        <h1 id="postTitle">Loading...</h1>
-        <time id="postDate"></time>
+    <main class="post-page" id="postPage">
+      <div class="post-main">
+        <a href="/blog" class="back-link">&larr; blog</a>
+        <div class="post-header" id="postHeader">
+          <h1 id="postTitle">Loading...</h1>
+          <time id="postDate"></time>
+        </div>
+        <article class="post-content" id="postContent"></article>
       </div>
-      <article class="post-content" id="postContent"></article>
+      <aside class="post-sidebar" id="postSidebar" hidden></aside>
     </main>
 
-    <script>
+    <script type="module">
+      const POST_WIDGETS = {
+        '2026-03-29-i-built-a-fortnite-dataminer': () => import('./widgets/fortnite-feed.js').then(m => m.mountFortniteFeed),
+      };
+
       (async function () {
         const params = new URLSearchParams(window.location.search);
         const slug = params.get('slug');
@@ -43,12 +50,27 @@
 
           document.getElementById('postTitle').textContent = meta.title;
           document.getElementById('postDate').textContent = meta.date;
-          document.title = `${meta.title} \u2014 Arhan Harchandani`;
+          document.title = `${meta.title} — Arhan Harchandani`;
 
           const postRes = await fetch(`./posts/${encodeURIComponent(slug)}.html`);
           if (!postRes.ok) throw new Error('Post file not found');
           const html = await postRes.text();
           document.getElementById('postContent').innerHTML = html;
+
+          const widgetLoader = POST_WIDGETS[slug];
+          if (widgetLoader) {
+            const sidebar = document.getElementById('postSidebar');
+            sidebar.hidden = false;
+            document.getElementById('postPage').classList.add('has-sidebar');
+            try {
+              const mount = await widgetLoader();
+              mount(sidebar);
+            } catch (err) {
+              console.warn('Widget failed:', err);
+              sidebar.hidden = true;
+              document.getElementById('postPage').classList.remove('has-sidebar');
+            }
+          }
         } catch {
           document.getElementById('postTitle').textContent = 'Error loading post';
           document.getElementById('postContent').textContent = 'Could not load this post.';
