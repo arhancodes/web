@@ -1,5 +1,10 @@
 [
   {
+    "kind": "org",
+    "name": "rewoven",
+    "href": "https://github.com/rewoven"
+  },
+  {
     "kind": "repo",
     "owner": "arhancodes",
     "repo": "jarvis",
@@ -8,11 +13,6 @@
     "stars": 6,
     "forks": 2,
     "href": "https://github.com/ArhanCodes/jarvis"
-  },
-  {
-    "kind": "org",
-    "name": "rewoven",
-    "href": "https://github.com/rewoven"
   },
   {
     "kind": "repo",
@@ -25,8 +25,23 @@
     "href": "https://github.com/tradebuddyhq/quill"
   },
   {
-    "kind": "org",
-    "name": "fortnite-datamining",
-    "href": "https://github.com/Fortnite-Datamining"
+    "kind": "repo",
+    "owner": "tradebuddyhq",
+    "repo": "ebay-wrapper",
+    "description": "ebay api wrapper for node.js",
+    "language": "typescript",
+    "stars": 10,
+    "forks": 0,
+    "href": "https://github.com/tradebuddyhq/ebay-wrapper"
+  },
+  {
+    "kind": "repo",
+    "owner": "fortnite-datamining",
+    "repo": "fortnite-datamining",
+    "description": "datamining fortnite changes from the api",
+    "language": "typescript",
+    "stars": 5,
+    "forks": 1,
+    "href": "https://github.com/Fortnite-Datamining/Fortnite-Datamining"
   }
 ]
