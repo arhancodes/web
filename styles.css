@@ -379,107 +379,108 @@ body {
   font-size: 0.875rem;
 }
 
-.project-cards {
+.repo-cards {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.project-card {
+.repo-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 20px;
-  border-radius: 8px;
-  border: 2px solid rgba(68, 64, 60, 0.5);
-  background: rgba(28, 25, 23, 0.5);
+  gap: 8px;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(28, 25, 23, 0.4);
+  text-decoration: none;
+  color: var(--text);
   transition: border-color 0.15s, background 0.15s;
 }
 
-.project-card:hover {
-  border-color: rgba(68, 64, 60, 0.85);
-  background: rgba(28, 25, 23, 0.75);
+.repo-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(28, 25, 23, 0.7);
 }
 
-.project-head {
+.repo-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.project-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0;
-}
-
-.project-status {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding: 3px 8px;
-  border-radius: 9999px;
-}
-
-.project-status-live {
-  color: var(--good);
-  background: rgba(34, 197, 94, 0.12);
-}
-
-.project-status-archived {
-  color: var(--stone-400);
-  background: rgba(168, 162, 158, 0.12);
-}
-
-.project-status-wip {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.12);
-}
-
-.project-desc {
-  font-size: 1rem;
-  color: var(--stone-300);
-  margin: 0;
-  line-height: 1.5;
-}
-
-.project-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.project-tech-pill {
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 3px 10px;
-  border-radius: 9999px;
-  background: rgba(68, 64, 60, 0.5);
-  color: var(--stone-300);
-}
-
-.project-links {
-  display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+.repo-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--stone-400);
+}
+
+.repo-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #58a6ff;
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.repo-owner {
+  font-weight: 400;
+  color: #58a6ff;
+}
+
+.repo-slug {
+  font-weight: 600;
+}
+
+.repo-card:hover .repo-name,
+.repo-card:hover .repo-owner {
+  text-decoration: underline;
+  text-decoration-color: rgba(88, 166, 255, 0.5);
+  text-underline-offset: 2px;
+}
+
+.repo-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--stone-400);
+  padding: 1px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  margin-left: auto;
+  text-transform: lowercase;
+  letter-spacing: 0;
+}
+
+.repo-desc {
+  font-size: 0.875rem;
+  color: var(--stone-300);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.repo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: var(--stone-400);
   margin-top: 4px;
 }
 
-.project-link {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--stone-300);
-  text-decoration: underline;
-  text-decoration-color: var(--stone-600);
-  text-underline-offset: 3px;
-  transition: text-decoration-color 0.15s;
+.repo-lang,
+.repo-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
-.project-link:hover {
-  text-decoration-color: var(--text);
+.repo-lang-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
 }
 
 .back-link {

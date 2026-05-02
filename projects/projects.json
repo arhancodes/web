@@ -1,46 +1,32 @@
 [
   {
-    "slug": "jarvis",
-    "title": "JARVIS",
-    "description": "Just A Rather Very Intelligent System.",
-    "tech": ["TypeScript"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/ArhanCodes/jarvis" },
-      { "label": "live", "href": "https://jarvis.arhan.dev" }
-    ]
+    "kind": "repo",
+    "owner": "arhancodes",
+    "repo": "jarvis",
+    "description": "just a rather very intelligent system",
+    "language": "typescript",
+    "stars": 6,
+    "forks": 2,
+    "href": "https://github.com/ArhanCodes/jarvis"
   },
   {
-    "slug": "rewoven",
-    "title": "Rewoven",
-    "description": "Sustainable fashion platform. iOS app, marketing site, Rust REST API serving sustainability ratings for 500+ brands, Elixir-powered curriculum / premium / quiz services, Chrome extension shopping lens, and a few Go services for donations and WhatsApp.",
-    "tech": ["TypeScript", "Rust", "Elixir", "Go", "Swift"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/rewoven" },
-      { "label": "live", "href": "https://rewovenapp.com" }
-    ]
+    "kind": "org",
+    "name": "rewoven",
+    "href": "https://github.com/rewoven"
   },
   {
-    "slug": "quill",
-    "title": "Quill",
-    "description": "Write code that reads like English.",
-    "tech": ["Go"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/tradebuddyhq/quill" },
-      { "label": "live", "href": "https://quill.tradebuddy.dev" }
-    ]
+    "kind": "repo",
+    "owner": "tradebuddyhq",
+    "repo": "quill",
+    "description": "write code that reads like english",
+    "language": "go",
+    "stars": 0,
+    "forks": 0,
+    "href": "https://github.com/tradebuddyhq/quill"
   },
   {
-    "slug": "fortnite-datamining",
-    "title": "Fortnite Datamining",
-    "description": "End-to-end Fortnite datamining ecosystem. Auto-fetcher commits API changes to a public repo every 30 minutes. Discord bot posts rich updates with images. Companion web app at fn.arhan.dev with shop, news, stats, map, weapon comparison, cosmetics browser, and shop history. Native macOS chat app with the same datamining feed.",
-    "tech": ["TypeScript", "Bun", "Hono", "Next.js", "React", "Tauri", "Docker"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/Fortnite-Datamining" },
-      { "label": "live", "href": "https://fn.arhan.dev" }
-    ]
+    "kind": "org",
+    "name": "fortnite-datamining",
+    "href": "https://github.com/Fortnite-Datamining"
   }
 ]

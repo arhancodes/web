@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Projects &mdash; Arhan Harchandani</title>
-    <meta name="description" content="Things Arhan Harchandani has built." />
+    <title>projects &mdash; arhan harchandani</title>
+    <meta name="description" content="things arhan harchandani has built." />
     <meta name="theme-color" content="#292524" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -15,90 +15,147 @@
   <body>
     <div class="blog-container">
       <nav class="breadcrumb">
-        <a href="/" class="breadcrumb-home" aria-label="Home">
+        <a href="/" class="breadcrumb-home" aria-label="home">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M9.828 3h3.982a.19.19 0 0 1 .169.276L13.092 5H14.5a.5.5 0 0 1 .5.5v.5h-15v-.5a.5.5 0 0 1 .5-.5h1.408l-.887-1.724A.19.19 0 0 1 1.19 3h3.982c.18 0 .345.098.43.253L6.82 5h2.36l1.218-1.747A.49.49 0 0 1 9.828 3M13.5 6.5H.5v6a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5z"/></svg>
         </a>
         <span class="breadcrumb-sep">/</span>
         <a href="/projects" class="breadcrumb-link">projects</a>
       </nav>
 
-      <div class="project-cards" id="projectCards">
-        <div class="post-card-loading">Loading...</div>
+      <div class="repo-cards" id="repoCards">
+        <div class="post-card-loading">loading...</div>
       </div>
     </div>
 
+    <template id="repoIcon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>
+    </template>
+
+    <template id="orgIcon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M1.75 16A1.75 1.75 0 0 1 0 14.25V1.75C0 .784.784 0 1.75 0h8.5C11.216 0 12 .784 12 1.75v12.5c0 .085-.006.168-.018.25h2.268a.25.25 0 0 0 .25-.25V8.285a.25.25 0 0 0-.111-.208l-1.055-.703a.749.749 0 1 1 .832-1.248l1.055.703c.487.325.779.871.779 1.456v5.965A1.75 1.75 0 0 1 14.25 16h-3.5a.766.766 0 0 1-.197-.026c-.099.017-.2.026-.303.026h-3a.75.75 0 0 1-.75-.75V14h-1v1.25a.75.75 0 0 1-.75.75Zm-.25-1.75c0 .138.112.25.25.25H4v-1.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 .75.75v1.25h2.25a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25h-8.5a.25.25 0 0 0-.25.25ZM3 3.75A.75.75 0 0 1 3.75 3h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 3.75Zm0 3A.75.75 0 0 1 3.75 6h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 3 6.75Zm.75 2.25h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM7 3.75A.75.75 0 0 1 7.75 3h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 7 3.75ZM7.75 6h.5a.75.75 0 0 1 0 1.5h-.5a.75.75 0 0 1 0-1.5ZM7 9.75A.75.75 0 0 1 7.75 9h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 7 9.75Z"/></svg>
+    </template>
+
+    <template id="starIcon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.751.751 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z"/></svg>
+    </template>
+
+    <template id="forkIcon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M5 5.372v.878c0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75v-.878a2.25 2.25 0 1 1 1.5 0v.878a2.25 2.25 0 0 1-2.25 2.25h-1.5v2.128a2.251 2.251 0 1 1-1.5 0V8.5h-1.5A2.25 2.25 0 0 1 3.5 6.25v-.878a2.25 2.25 0 1 1 1.5 0ZM5 3.25a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Zm6.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm-3 8.75a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"/></svg>
+    </template>
+
     <script>
+      const LANGUAGE_COLORS = {
+        typescript: '#3178c6',
+        javascript: '#f1e05a',
+        rust: '#dea584',
+        go: '#00add8',
+        elixir: '#6e4a7e',
+        swift: '#f05138',
+        html: '#e34c26',
+        css: '#563d7c',
+        python: '#3572a5',
+      };
+
+      function svgFromTemplate(id) {
+        const t = document.getElementById(id);
+        return t.content.firstElementChild.cloneNode(true);
+      }
+
       (async function () {
-        const container = document.getElementById('projectCards');
+        const container = document.getElementById('repoCards');
         try {
           const res = await fetch('./projects.json');
-          if (!res.ok) throw new Error('Failed to load projects');
-          const projects = await res.json();
+          if (!res.ok) throw new Error('failed to load');
+          const items = await res.json();
           container.innerHTML = '';
 
-          if (projects.length === 0) {
-            container.innerHTML = '<div class="post-card-empty">No projects yet.</div>';
-            return;
-          }
-
-          for (const p of projects) {
-            const card = document.createElement('article');
-            card.className = 'project-card';
+          for (const it of items) {
+            const card = document.createElement('a');
+            card.className = 'repo-card';
+            card.href = it.href;
+            card.target = '_blank';
+            card.rel = 'noreferrer';
 
             const head = document.createElement('div');
-            head.className = 'project-head';
+            head.className = 'repo-head';
 
-            const title = document.createElement('h2');
-            title.className = 'project-title';
-            title.textContent = p.title;
-            head.appendChild(title);
+            const icon = document.createElement('span');
+            icon.className = 'repo-icon';
+            icon.appendChild(svgFromTemplate(it.kind === 'org' ? 'orgIcon' : 'repoIcon'));
+            head.appendChild(icon);
 
-            if (p.status) {
-              const status = document.createElement('span');
-              status.className = `project-status project-status-${p.status}`;
-              status.textContent = p.status;
-              head.appendChild(status);
+            const name = document.createElement('span');
+            name.className = 'repo-name';
+            if (it.kind === 'repo') {
+              const owner = document.createElement('span');
+              owner.className = 'repo-owner';
+              owner.textContent = it.owner + ' / ';
+              name.appendChild(owner);
+              const repo = document.createElement('span');
+              repo.className = 'repo-slug';
+              repo.textContent = it.repo;
+              name.appendChild(repo);
+            } else {
+              name.textContent = it.name;
             }
+            head.appendChild(name);
+
+            const label = document.createElement('span');
+            label.className = 'repo-label';
+            label.textContent = it.kind === 'org' ? 'organization' : 'public';
+            head.appendChild(label);
+
             card.appendChild(head);
 
-            if (p.description) {
+            if (it.description) {
               const desc = document.createElement('p');
-              desc.className = 'project-desc';
-              desc.textContent = p.description;
+              desc.className = 'repo-desc';
+              desc.textContent = it.description;
               card.appendChild(desc);
             }
 
-            if (Array.isArray(p.tech) && p.tech.length > 0) {
-              const tech = document.createElement('div');
-              tech.className = 'project-tech';
-              for (const t of p.tech) {
-                const pill = document.createElement('span');
-                pill.className = 'project-tech-pill';
-                pill.textContent = t;
-                tech.appendChild(pill);
-              }
-              card.appendChild(tech);
+            const meta = document.createElement('div');
+            meta.className = 'repo-meta';
+
+            if (it.language) {
+              const lang = document.createElement('span');
+              lang.className = 'repo-lang';
+              const dot = document.createElement('span');
+              dot.className = 'repo-lang-dot';
+              dot.style.background = LANGUAGE_COLORS[it.language.toLowerCase()] || '#888';
+              lang.appendChild(dot);
+              const langName = document.createElement('span');
+              langName.textContent = it.language;
+              lang.appendChild(langName);
+              meta.appendChild(lang);
             }
 
-            if (Array.isArray(p.links) && p.links.length > 0) {
-              const links = document.createElement('div');
-              links.className = 'project-links';
-              for (const l of p.links) {
-                const a = document.createElement('a');
-                a.href = l.href;
-                a.target = '_blank';
-                a.rel = 'noreferrer';
-                a.className = 'project-link';
-                a.textContent = l.label;
-                links.appendChild(a);
-              }
-              card.appendChild(links);
+            if (typeof it.stars === 'number') {
+              const stars = document.createElement('span');
+              stars.className = 'repo-stat';
+              stars.appendChild(svgFromTemplate('starIcon'));
+              const count = document.createElement('span');
+              count.textContent = it.stars;
+              stars.appendChild(count);
+              meta.appendChild(stars);
             }
+
+            if (typeof it.forks === 'number') {
+              const forks = document.createElement('span');
+              forks.className = 'repo-stat';
+              forks.appendChild(svgFromTemplate('forkIcon'));
+              const count = document.createElement('span');
+              count.textContent = it.forks;
+              forks.appendChild(count);
+              meta.appendChild(forks);
+            }
+
+            if (meta.children.length > 0) card.appendChild(meta);
 
             container.appendChild(card);
           }
         } catch {
-          container.innerHTML = '<div class="post-card-empty">Could not load projects.</div>';
+          container.innerHTML = '<div class="post-card-empty">could not load.</div>';
         }
       })();
     </script>
