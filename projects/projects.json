@@ -1,8 +1,11 @@
 [
   {
-    "kind": "org",
-    "name": "rewoven",
-    "href": "https://github.com/rewoven"
+    "kind": "repo",
+    "owner": "rewoven",
+    "repo": "api",
+    "description": "rest api for sustainability ratings of 500+ fashion brands",
+    "language": "rust",
+    "href": "https://github.com/rewoven/api"
   },
   {
     "kind": "repo",
@@ -10,8 +13,6 @@
     "repo": "jarvis",
     "description": "just a rather very intelligent system",
     "language": "typescript",
-    "stars": 6,
-    "forks": 2,
     "href": "https://github.com/ArhanCodes/jarvis"
   },
   {
@@ -20,8 +21,6 @@
     "repo": "quill",
     "description": "write code that reads like english",
     "language": "go",
-    "stars": 0,
-    "forks": 0,
     "href": "https://github.com/tradebuddyhq/quill"
   },
   {
@@ -30,8 +29,6 @@
     "repo": "ebay-wrapper",
     "description": "ebay api wrapper for node.js",
     "language": "typescript",
-    "stars": 10,
-    "forks": 0,
     "href": "https://github.com/tradebuddyhq/ebay-wrapper"
   },
   {
@@ -40,8 +37,6 @@
     "repo": "fortnite-datamining",
     "description": "datamining fortnite changes from the api",
     "language": "typescript",
-    "stars": 5,
-    "forks": 1,
     "href": "https://github.com/Fortnite-Datamining/Fortnite-Datamining"
   }
 ]

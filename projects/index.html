@@ -130,26 +130,6 @@
               meta.appendChild(lang);
             }
 
-            if (typeof it.stars === 'number') {
-              const stars = document.createElement('span');
-              stars.className = 'repo-stat';
-              stars.appendChild(svgFromTemplate('starIcon'));
-              const count = document.createElement('span');
-              count.textContent = it.stars;
-              stars.appendChild(count);
-              meta.appendChild(stars);
-            }
-
-            if (typeof it.forks === 'number') {
-              const forks = document.createElement('span');
-              forks.className = 'repo-stat';
-              forks.appendChild(svgFromTemplate('forkIcon'));
-              const count = document.createElement('span');
-              count.textContent = it.forks;
-              forks.appendChild(count);
-              meta.appendChild(forks);
-            }
-
             if (meta.children.length > 0) card.appendChild(meta);
 
             container.appendChild(card);
