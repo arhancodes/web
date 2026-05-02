@@ -274,8 +274,8 @@ body {
 .bottom-nav ul {
   list-style: none;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  gap: 16px;
 }
 
 .bottom-nav li {
