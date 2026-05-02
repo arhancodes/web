@@ -24,7 +24,6 @@ body {
 a { color: var(--text); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.25); }
 a:hover { text-decoration-color: rgba(255,255,255,0.55); }
 
-/* --- Utility classes (replacing inline styles) --- */
 .mt-xs  { margin-top: 8px; }
 .mt-sm  { margin-top: 10px; }
 .mt-md  { margin-top: 12px; }
@@ -74,7 +73,6 @@ h1 {
 }
 .link:hover { background: rgba(255,255,255,0.06); }
 
-/* Primary link pill (e.g. Download CV) */
 .link-primary {
   border-color: rgba(124, 92, 255, 0.45);
   background: rgba(124, 92, 255, 0.12);
@@ -89,7 +87,6 @@ h1 {
   background: rgba(124, 92, 255, 0.22);
 }
 
-/* --- Status indicator --- */
 .status {
   display:flex;
   align-items:flex-start;
@@ -124,7 +121,6 @@ h1 {
   box-shadow: 0 0 0 6px rgba(34,197,94,0.14);
 }
 
-/* --- Cards --- */
 .card {
   border: 1px solid var(--border);
   background: var(--card);
@@ -145,7 +141,6 @@ h1 {
   gap: 12px;
 }
 
-/* --- Repo grid --- */
 .repo-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -235,7 +230,6 @@ h1 {
   .header { flex-direction: column; }
 }
 
-/* --- Generator page UI --- */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -314,7 +308,6 @@ textarea.input { resize: vertical; }
 }
 .btnPrimary:hover { background: rgba(124, 92, 255, 0.28); }
 
-/* --- Sub-page section heading --- */
 .section-head-sm {
   margin: 0;
   font-size: 14px;

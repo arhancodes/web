@@ -59,7 +59,6 @@ function escapeHtml(str) {
 }
 
 function parseCommit(commit) {
-  // Some commits store literal "\n" sequences instead of real newlines.
   const fullMessage = commit.commit.message.replace(/\\n/g, '\n');
   const lines = fullMessage.split(/\r?\n/);
   const title = lines[0];

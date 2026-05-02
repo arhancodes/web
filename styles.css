@@ -22,7 +22,6 @@ body {
   display: flex;
 }
 
-/* ---- Homepage layout ---- */
 .page {
   display: flex;
   flex-direction: column;
@@ -33,7 +32,6 @@ body {
   max-width: 672px;
 }
 
-/* ---- Heading ---- */
 .heading {
   font-size: 3.75rem;
   font-weight: 700;
@@ -70,7 +68,6 @@ body {
   object-fit: contain;
 }
 
-/* ---- Social icon row ---- */
 .icon-row {
   display: flex;
   gap: 12px;
@@ -97,7 +94,6 @@ body {
 
 #playBtn.playing { color: var(--text); }
 
-/* ---- Status row (pills) ---- */
 .status-row {
   display: flex;
   gap: 8px;
@@ -136,7 +132,6 @@ body {
   fill: currentColor;
 }
 
-/* ---- Activity card (Discord-style popover) ---- */
 .activity-wrapper {
   position: relative;
   display: inline-block;
@@ -260,7 +255,6 @@ body {
   display: none;
 }
 
-/* ---- Status icon ---- */
 .status-icon {
   display: flex;
   align-items: center;
@@ -272,7 +266,6 @@ body {
   height: 14px;
 }
 
-/* ---- Bottom nav ---- */
 .bottom-nav {
   margin-top: 48px;
   font-size: 1.75rem;
@@ -295,9 +288,6 @@ body {
   text-decoration: none;
 }
 
-/* ============================================
-   Blog listing page
-   ============================================ */
 .blog-container {
   width: 100%;
   max-width: 768px;
@@ -305,7 +295,6 @@ body {
   padding: 0 16px;
 }
 
-/* Breadcrumb */
 .breadcrumb {
   margin-top: 24px;
   margin-bottom: 48px;
@@ -348,7 +337,6 @@ body {
   background: var(--stone-700);
 }
 
-/* Post cards */
 .post-cards {
   display: flex;
   flex-direction: column;
@@ -391,7 +379,6 @@ body {
   font-size: 0.875rem;
 }
 
-/* Back link (used on post page) */
 .back-link {
   color: var(--stone-400);
   text-decoration: none;
@@ -403,9 +390,6 @@ body {
 
 .back-link:hover { color: var(--text); }
 
-/* ============================================
-   Blog post page
-   ============================================ */
 .post-page {
   max-width: 640px;
   padding: 60px 24px;
@@ -433,7 +417,6 @@ body {
   }
 }
 
-/* Sidebar widget */
 .post-sidebar {
   position: sticky;
   top: 24px;
@@ -685,7 +668,6 @@ body {
   margin: 16px 0;
 }
 
-/* ---- Responsive ---- */
 @media (max-width: 480px) {
   .heading { font-size: clamp(2rem, 10vw, 3.75rem); }
   .subtitle { font-size: clamp(1rem, 4.5vw, 1.5rem); }

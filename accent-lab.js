@@ -85,7 +85,6 @@ function reset() {
   applyToPage();
 }
 
-// keep hex + color inputs in sync
 $accent.addEventListener('input', () => {
   $accentHex.value = $accent.value;
   applyToPage();

@@ -198,7 +198,6 @@ const x = 42;
       const jsonEntry = document.getElementById('jsonEntry');
       const toast = document.getElementById('toast');
 
-      // Default date to today
       dateInput.value = new Date().toISOString().split('T')[0];
 
       function getSlug() {
@@ -225,17 +224,14 @@ const x = 42;
         setTimeout(() => toast.classList.remove('show'), 2000);
       }
 
-      // Simple Markdown to HTML converter
       function md(text) {
         let html = text;
 
-        // Code blocks (``` ... ```)
         html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
           const escaped = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
           return `<pre><code>${escaped.trimEnd()}</code></pre>`;
         });
 
-        // Split into lines for block-level processing
         const lines = html.split('\n');
         let result = [];
         let inList = false;
@@ -245,7 +241,6 @@ const x = 42;
         while (i < lines.length) {
           let line = lines[i];
 
-          // Skip lines inside pre blocks (already handled)
           if (line.includes('<pre><code>')) {
             let preBlock = line;
             while (!line.includes('</code></pre>') && i < lines.length - 1) {
@@ -260,7 +255,6 @@ const x = 42;
             continue;
           }
 
-          // Headings
           if (/^### (.+)/.test(line)) {
             if (inList) { result.push('</ul>'); inList = false; }
             if (inBlockquote) { result.push('</blockquote>'); inBlockquote = false; }
@@ -274,7 +268,6 @@ const x = 42;
             i++; continue;
           }
 
-          // List items
           if (/^[-*] (.+)/.test(line)) {
             if (inBlockquote) { result.push('</blockquote>'); inBlockquote = false; }
             if (!inList) { result.push('<ul>'); inList = true; }
@@ -285,7 +278,6 @@ const x = 42;
             inList = false;
           }
 
-          // Blockquote
           if (/^> (.+)/.test(line)) {
             if (inList) { result.push('</ul>'); inList = false; }
             if (!inBlockquote) { result.push('<blockquote>'); inBlockquote = true; }
@@ -296,19 +288,16 @@ const x = 42;
             inBlockquote = false;
           }
 
-          // Images (standalone line)
           if (/^!\[([^\]]*)\]\(([^)]+)\)$/.test(line.trim())) {
             const m = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
             result.push(`<img src="${m[2]}" alt="${m[1]}" />`);
             i++; continue;
           }
 
-          // Empty line
           if (line.trim() === '') {
             i++; continue;
           }
 
-          // Paragraph
           result.push(`<p>${inline(line)}</p>`);
           i++;
         }
@@ -319,7 +308,6 @@ const x = 42;
         return result.join('\n');
       }
 
-      // Inline markdown
       function inline(text) {
         return text
           .replace(/`([^`]+)`/g, '<code>$1</code>')
@@ -328,7 +316,6 @@ const x = 42;
           .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
       }
 
-      // Download post HTML file
       document.getElementById('downloadBtn').addEventListener('click', () => {
         const body = bodyInput.value.trim();
         if (!body) { showToast('Write some content first'); return; }
@@ -343,7 +330,6 @@ const x = 42;
         showToast(`Downloaded ${slug}.html`);
       });
 
-      // Copy JSON entry
       document.getElementById('copyJsonBtn').addEventListener('click', () => {
         const title = titleInput.value.trim() || 'Untitled';
         const date = dateInput.value;
@@ -360,7 +346,6 @@ const x = 42;
         });
       });
 
-      // Toggle preview
       let previewVisible = false;
       document.getElementById('previewBtn').addEventListener('click', () => {
         previewVisible = !previewVisible;
@@ -371,14 +356,12 @@ const x = 42;
         }
       });
 
-      // Live preview update
       bodyInput.addEventListener('input', () => {
         if (previewVisible) {
           previewArea.innerHTML = md(bodyInput.value);
         }
       });
 
-      // Tab key inserts spaces in textarea
       bodyInput.addEventListener('keydown', (e) => {
         if (e.key === 'Tab') {
           e.preventDefault();

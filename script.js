@@ -1,7 +1,6 @@
 const DISCORD_USER_ID = '928558715974586399';
 const WATCHING_API = 'https://streaming-tracker.arhan-harchandani.workers.dev';
 
-/* ---- Time display ---- */
 const timeDisplay = document.getElementById('timeDisplay');
 
 function updateTime() {
@@ -15,7 +14,6 @@ function updateTime() {
 updateTime();
 setInterval(updateTime, 15000);
 
-/* ---- Discord status ---- */
 const statusIcon = document.getElementById('statusIcon');
 const statusText = document.getElementById('statusText');
 const activityPill = document.getElementById('activityPill');
@@ -78,7 +76,6 @@ function renderCardContent() {
   activityCardName.textContent = a.name || '';
   activityCardDetails.textContent = a.details || '';
 
-  // Combine state with small_text if present (e.g. "Tier 152" for Fortnite)
   const stateParts = [];
   if (a.state) stateParts.push(a.state);
   if (a.assets?.small_text && !a.state) stateParts.push(a.assets.small_text);
@@ -87,7 +84,6 @@ function renderCardContent() {
   const start = getElapsedStart(a);
   activityCardTime.textContent = start ? formatElapsed(start) : '';
 
-  // Large icon
   const iconUrl = getAssetUrl(a, 'large_image');
   if (iconUrl) {
     activityCardIcon.innerHTML = `<img src="${iconUrl}" alt="${a.name || ''}" />`;
@@ -95,7 +91,6 @@ function renderCardContent() {
     activityCardIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#a8a29e" style="width:32px;height:32px;"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4-3c-.83 0-1.5-.67-1.5-1.5S18.67 9 19.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>`;
   }
 
-  // Small icon overlay
   const smallUrl = getAssetUrl(a, 'small_image');
   if (smallUrl && activityCardSmallIcon) {
     const tip = a.assets?.small_text || '';
@@ -123,7 +118,6 @@ if (activityPill) {
   });
 }
 
-// Close card when clicking outside
 document.addEventListener('click', (e) => {
   if (!activityCard?.classList.contains('open')) return;
   if (!activityCard.contains(e.target) && e.target !== activityPill && !activityPill.contains(e.target)) {
@@ -131,7 +125,6 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Update elapsed time every second when card is open
 setInterval(() => {
   if (!activityCard?.classList.contains('open')) return;
   const start = getElapsedStart(currentGameActivity);
@@ -229,7 +222,6 @@ function connectLanyard() {
 
 connectLanyard();
 
-/* ---- Prime Video tracker (worker API) ---- */
 async function loadWatching() {
   if (!WATCHING_API || !watchingPill || !watchingText) return;
   try {
@@ -256,7 +248,6 @@ async function loadWatching() {
 loadWatching();
 setInterval(loadWatching, 30000);
 
-/* ---- Song play button (HTML5 audio, preloaded for instant play) ---- */
 const playBtn = document.getElementById('playBtn');
 const playIcon = document.getElementById('playIcon');
 const pauseIcon = document.getElementById('pauseIcon');
@@ -275,7 +266,6 @@ function setPlayingUI(playing) {
 }
 
 if (playBtn && songPreview) {
-  // Force aggressive preload
   songPreview.load();
 
   songPreview.addEventListener('play', () => setPlayingUI(true));

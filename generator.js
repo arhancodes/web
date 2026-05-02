@@ -119,7 +119,6 @@ function prettyJson(obj) {
   return JSON.stringify(obj, null, 2);
 }
 
-/** Track the previous blob URL so we can revoke it and avoid memory leaks */
 let _prevBlobUrl = null;
 
 function refresh() {
@@ -129,7 +128,6 @@ function refresh() {
   $jsonOut.textContent = prettyJson(cfg);
   $htmlOut.textContent = html;
 
-  // Revoke previous blob URL to prevent memory leak
   if (_prevBlobUrl) {
     URL.revokeObjectURL(_prevBlobUrl);
   }
@@ -143,7 +141,6 @@ function refresh() {
   $previewLink.rel = 'noreferrer';
   $previewLink.textContent = 'Open preview';
 
-  // keep latest for buttons
   window.__generated = { cfg, html };
 }
 
@@ -168,7 +165,6 @@ function downloadHtml() {
   document.body.appendChild(a);
   a.click();
   a.remove();
-  // Clean up download blob URL after a short delay
   setTimeout(() => URL.revokeObjectURL(dlUrl), 1000);
 }
 
