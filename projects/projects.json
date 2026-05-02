@@ -1,65 +1,46 @@
 [
   {
-    "slug": "fortnite-chat",
-    "title": "Fortnite Chat",
-    "description": "Discord-style chat app for Fortnite, with real-time presence, full Fortnite stats on profiles, and a dedicated datamining channel that auto-posts new cosmetics and shop resets.",
-    "tech": ["TypeScript", "Bun", "Hono", "React", "Tauri", "SQLite"],
+    "slug": "jarvis",
+    "title": "JARVIS",
+    "description": "Just A Rather Very Intelligent System.",
+    "tech": ["TypeScript"],
     "status": "live",
     "links": [
-      { "label": "github", "href": "https://github.com/Fortnite-Datamining/chat" },
-      { "label": "live", "href": "https://chat.arhan.dev" }
+      { "label": "github", "href": "https://github.com/ArhanCodes/jarvis" },
+      { "label": "live", "href": "https://jarvis.arhan.dev" }
     ]
   },
   {
-    "slug": "fortnite-companion",
-    "title": "Fortnite Companion",
-    "description": "Companion web app for Fortnite. Item shop, news, player stats lookup, map with POIs, weapon comparison engine, cosmetics browser, and a daily-tracked shop history.",
-    "tech": ["Next.js 15", "React 19", "TypeScript", "Tailwind v4"],
+    "slug": "rewoven",
+    "title": "Rewoven",
+    "description": "Sustainable fashion platform. iOS app, marketing site, Rust REST API serving sustainability ratings for 500+ brands, Elixir-powered curriculum / premium / quiz services, Chrome extension shopping lens, and a few Go services for donations and WhatsApp.",
+    "tech": ["TypeScript", "Rust", "Elixir", "Go", "Swift"],
     "status": "live",
     "links": [
-      { "label": "github", "href": "https://github.com/Fortnite-Datamining/companion" },
-      { "label": "live", "href": "https://fn.arhan.dev" }
+      { "label": "github", "href": "https://github.com/rewoven" },
+      { "label": "live", "href": "https://rewovenapp.com" }
+    ]
+  },
+  {
+    "slug": "quill",
+    "title": "Quill",
+    "description": "Write code that reads like English.",
+    "tech": ["Go"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/tradebuddyhq/quill" },
+      { "label": "live", "href": "https://quill.tradebuddy.dev" }
     ]
   },
   {
     "slug": "fortnite-datamining",
     "title": "Fortnite Datamining",
-    "description": "Auto-fetches data from fortnite-api.com every 30 minutes and commits changes to a public Git repo. Includes a per-item registry of every cosmetic's lifetime data, daily shop snapshots, and a generated CHANGELOG.",
-    "tech": ["TypeScript", "GitHub Actions", "Node"],
+    "description": "End-to-end Fortnite datamining ecosystem. Auto-fetcher commits API changes to a public repo every 30 minutes. Discord bot posts rich updates with images. Companion web app at fn.arhan.dev with shop, news, stats, map, weapon comparison, cosmetics browser, and shop history. Native macOS chat app with the same datamining feed.",
+    "tech": ["TypeScript", "Bun", "Hono", "Next.js", "React", "Tauri", "Docker"],
     "status": "live",
     "links": [
-      { "label": "github", "href": "https://github.com/Fortnite-Datamining/Fortnite-Datamining" }
-    ]
-  },
-  {
-    "slug": "fortnite-bot",
-    "title": "Fortnite Datamining Bot",
-    "description": "Discord bot that polls the datamining repo and posts rich update messages — new cosmetics with images, shop resets with prices, news posts, build alerts. Wishlist DMs when tracked skins drop.",
-    "tech": ["TypeScript", "discord.js", "SQLite", "Docker"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/Fortnite-Datamining/bot" }
-    ]
-  },
-  {
-    "slug": "tv",
-    "title": "TV",
-    "description": "A self-hostable \"currently watching\" API for Prime Video, Netflix, and Disney+. Chrome extension scrapes the title, posts to a Cloudflare Worker, displays on your personal site.",
-    "tech": ["Cloudflare Workers", "Chrome Extension", "JavaScript"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/ArhanCodes/tv" }
-    ]
-  },
-  {
-    "slug": "arhan-dev",
-    "title": "arhan.dev",
-    "description": "This site. Personal site with bio, blog, projects, live status pills, and a few interactive tools.",
-    "tech": ["HTML", "CSS", "JavaScript"],
-    "status": "live",
-    "links": [
-      { "label": "github", "href": "https://github.com/ArhanCodes/web" },
-      { "label": "live", "href": "https://arhan.dev" }
+      { "label": "github", "href": "https://github.com/Fortnite-Datamining" },
+      { "label": "live", "href": "https://fn.arhan.dev" }
     ]
   }
 ]
