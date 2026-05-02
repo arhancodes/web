@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "fortnite-chat",
+    "title": "Fortnite Chat",
+    "description": "Discord-style chat app for Fortnite, with real-time presence, full Fortnite stats on profiles, and a dedicated datamining channel that auto-posts new cosmetics and shop resets.",
+    "tech": ["TypeScript", "Bun", "Hono", "React", "Tauri", "SQLite"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/Fortnite-Datamining/chat" },
+      { "label": "live", "href": "https://chat.arhan.dev" }
+    ]
+  },
+  {
+    "slug": "fortnite-companion",
+    "title": "Fortnite Companion",
+    "description": "Companion web app for Fortnite. Item shop, news, player stats lookup, map with POIs, weapon comparison engine, cosmetics browser, and a daily-tracked shop history.",
+    "tech": ["Next.js 15", "React 19", "TypeScript", "Tailwind v4"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/Fortnite-Datamining/companion" },
+      { "label": "live", "href": "https://fn.arhan.dev" }
+    ]
+  },
+  {
+    "slug": "fortnite-datamining",
+    "title": "Fortnite Datamining",
+    "description": "Auto-fetches data from fortnite-api.com every 30 minutes and commits changes to a public Git repo. Includes a per-item registry of every cosmetic's lifetime data, daily shop snapshots, and a generated CHANGELOG.",
+    "tech": ["TypeScript", "GitHub Actions", "Node"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/Fortnite-Datamining/Fortnite-Datamining" }
+    ]
+  },
+  {
+    "slug": "fortnite-bot",
+    "title": "Fortnite Datamining Bot",
+    "description": "Discord bot that polls the datamining repo and posts rich update messages — new cosmetics with images, shop resets with prices, news posts, build alerts. Wishlist DMs when tracked skins drop.",
+    "tech": ["TypeScript", "discord.js", "SQLite", "Docker"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/Fortnite-Datamining/bot" }
+    ]
+  },
+  {
+    "slug": "tv",
+    "title": "TV",
+    "description": "A self-hostable \"currently watching\" API for Prime Video, Netflix, and Disney+. Chrome extension scrapes the title, posts to a Cloudflare Worker, displays on your personal site.",
+    "tech": ["Cloudflare Workers", "Chrome Extension", "JavaScript"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/ArhanCodes/tv" }
+    ]
+  },
+  {
+    "slug": "arhan-dev",
+    "title": "arhan.dev",
+    "description": "This site. Personal site with bio, blog, projects, live status pills, and a few interactive tools.",
+    "tech": ["HTML", "CSS", "JavaScript"],
+    "status": "live",
+    "links": [
+      { "label": "github", "href": "https://github.com/ArhanCodes/web" },
+      { "label": "live", "href": "https://arhan.dev" }
+    ]
+  }
+]

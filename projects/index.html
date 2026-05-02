@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects &mdash; Arhan Harchandani</title>
+    <meta name="description" content="Things Arhan Harchandani has built." />
+    <meta name="theme-color" content="#292524" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>A</text></svg>" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;700;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <div class="blog-container">
+      <nav class="breadcrumb">
+        <a href="/" class="breadcrumb-home" aria-label="Home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M9.828 3h3.982a.19.19 0 0 1 .169.276L13.092 5H14.5a.5.5 0 0 1 .5.5v.5h-15v-.5a.5.5 0 0 1 .5-.5h1.408l-.887-1.724A.19.19 0 0 1 1.19 3h3.982c.18 0 .345.098.43.253L6.82 5h2.36l1.218-1.747A.49.49 0 0 1 9.828 3M13.5 6.5H.5v6a1.5 1.5 0 0 0 1.5 1.5h10a1.5 1.5 0 0 0 1.5-1.5z"/></svg>
+        </a>
+        <span class="breadcrumb-sep">/</span>
+        <a href="/projects" class="breadcrumb-link">projects</a>
+      </nav>
+
+      <div class="project-cards" id="projectCards">
+        <div class="post-card-loading">Loading...</div>
+      </div>
+    </div>
+
+    <script>
+      (async function () {
+        const container = document.getElementById('projectCards');
+        try {
+          const res = await fetch('./projects.json');
+          if (!res.ok) throw new Error('Failed to load projects');
+          const projects = await res.json();
+          container.innerHTML = '';
+
+          if (projects.length === 0) {
+            container.innerHTML = '<div class="post-card-empty">No projects yet.</div>';
+            return;
+          }
+
+          for (const p of projects) {
+            const card = document.createElement('article');
+            card.className = 'project-card';
+
+            const head = document.createElement('div');
+            head.className = 'project-head';
+
+            const title = document.createElement('h2');
+            title.className = 'project-title';
+            title.textContent = p.title;
+            head.appendChild(title);
+
+            if (p.status) {
+              const status = document.createElement('span');
+              status.className = `project-status project-status-${p.status}`;
+              status.textContent = p.status;
+              head.appendChild(status);
+            }
+            card.appendChild(head);
+
+            if (p.description) {
+              const desc = document.createElement('p');
+              desc.className = 'project-desc';
+              desc.textContent = p.description;
+              card.appendChild(desc);
+            }
+
+            if (Array.isArray(p.tech) && p.tech.length > 0) {
+              const tech = document.createElement('div');
+              tech.className = 'project-tech';
+              for (const t of p.tech) {
+                const pill = document.createElement('span');
+                pill.className = 'project-tech-pill';
+                pill.textContent = t;
+                tech.appendChild(pill);
+              }
+              card.appendChild(tech);
+            }
+
+            if (Array.isArray(p.links) && p.links.length > 0) {
+              const links = document.createElement('div');
+              links.className = 'project-links';
+              for (const l of p.links) {
+                const a = document.createElement('a');
+                a.href = l.href;
+                a.target = '_blank';
+                a.rel = 'noreferrer';
+                a.className = 'project-link';
+                a.textContent = l.label;
+                links.appendChild(a);
+              }
+              card.appendChild(links);
+            }
+
+            container.appendChild(card);
+          }
+        } catch {
+          container.innerHTML = '<div class="post-card-empty">Could not load projects.</div>';
+        }
+      })();
+    </script>
+  </body>
+</html>
