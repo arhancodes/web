@@ -228,7 +228,7 @@ async function loadWatching() {
     const res = await fetch(WATCHING_API + '?t=' + Date.now());
     if (!res.ok) throw new Error(`watching API ${res.status}`);
     const data = await res.json();
-    const FRESH_MS = 90 * 1000;
+    const FRESH_MS = 3 * 60 * 1000;
     const isFresh = data && data.updatedAt && (Date.now() - data.updatedAt < FRESH_MS);
     const discordPillOpen = watchingPill.style.display !== 'none' && watchingText.textContent && !watchingText.dataset.source?.startsWith('prime');
     if (data && data.title && isFresh) {
