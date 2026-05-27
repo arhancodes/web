@@ -79,10 +79,12 @@
             const head = document.createElement('div');
             head.className = 'repo-head';
 
-            const icon = document.createElement('span');
-            icon.className = 'repo-icon';
-            icon.appendChild(svgFromTemplate(it.kind === 'org' ? 'orgIcon' : 'repoIcon'));
-            head.appendChild(icon);
+            if (it.kind !== 'site') {
+              const icon = document.createElement('span');
+              icon.className = 'repo-icon';
+              icon.appendChild(svgFromTemplate(it.kind === 'org' ? 'orgIcon' : 'repoIcon'));
+              head.appendChild(icon);
+            }
 
             const name = document.createElement('span');
             name.className = 'repo-name';
@@ -100,10 +102,12 @@
             }
             head.appendChild(name);
 
-            const label = document.createElement('span');
-            label.className = 'repo-label';
-            label.textContent = it.kind === 'org' ? 'organization' : 'public';
-            head.appendChild(label);
+            if (it.kind !== 'site') {
+              const label = document.createElement('span');
+              label.className = 'repo-label';
+              label.textContent = it.kind === 'org' ? 'organization' : 'public';
+              head.appendChild(label);
+            }
 
             card.appendChild(head);
 
