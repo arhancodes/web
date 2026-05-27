@@ -1,19 +1,19 @@
 [
   {
     "kind": "site",
-    "name": "Rewoven",
+    "name": "rewoven",
     "description": "an easy way for people to contribute to environmental change in small steps",
     "href": "https://rewovenapp.com"
   },
   {
     "kind": "site",
-    "name": "Beam",
+    "name": "beam",
     "description": "end to end encrypted file transfer",
     "href": "https://beam.arhan.dev"
   },
   {
     "kind": "site",
-    "name": "Tether",
+    "name": "tether",
     "description": "clinical companion app for post-discharge patients",
     "href": "https://tether.avlynor.com"
   }
