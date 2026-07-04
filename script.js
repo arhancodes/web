@@ -1,5 +1,6 @@
 const DISCORD_USER_ID = '928558715974586399';
 const WATCHING_API = 'https://streaming-tracker.arhan-harchandani.workers.dev';
+const FN_STATS_API = WATCHING_API + '/fortnite';
 
 const timeDisplay = document.getElementById('timeDisplay');
 
@@ -263,6 +264,92 @@ function setPlayingUI(playing) {
     playIcon.style.display = '';
     pauseIcon.style.display = 'none';
   }
+}
+
+const waveHeading = document.getElementById('waveHeading');
+const fnStatsCard = document.getElementById('fnStatsCard');
+const fnStatsBody = document.getElementById('fnStatsBody');
+let fnStatsCache = null;
+let fnStatsLoading = false;
+
+function renderFnStat(label, value) {
+  const el = document.createElement('div');
+  el.className = 'fn-stat';
+  const v = document.createElement('div');
+  v.className = 'fn-stat-value';
+  v.textContent = value;
+  const l = document.createElement('div');
+  l.className = 'fn-stat-label';
+  l.textContent = label;
+  el.appendChild(v);
+  el.appendChild(l);
+  return el;
+}
+
+function renderFortniteStats(data) {
+  if (!fnStatsBody) return;
+  fnStatsBody.innerHTML = '';
+
+  const name = document.createElement('div');
+  name.className = 'fn-stats-name';
+  name.textContent = data.name;
+  fnStatsBody.appendChild(name);
+
+  const overall = data.overall;
+  if (overall) {
+    const grid = document.createElement('div');
+    grid.className = 'fn-stats-grid';
+    grid.appendChild(renderFnStat('wins', overall.wins.toLocaleString()));
+    grid.appendChild(renderFnStat('kd', overall.kd.toFixed(2)));
+    grid.appendChild(renderFnStat('matches', overall.matches.toLocaleString()));
+    grid.appendChild(renderFnStat('win rate', `${overall.winRate.toFixed(1)}%`));
+    fnStatsBody.appendChild(grid);
+  }
+
+  const modes = document.createElement('div');
+  modes.className = 'fn-stats-modes';
+  for (const [mode, stats] of [['solo', data.solo], ['duo', data.duo], ['squad', data.squad]]) {
+    if (!stats?.matches) continue;
+    const chip = document.createElement('span');
+    chip.className = 'fn-mode';
+    chip.textContent = `${mode} · ${stats.wins}W · ${stats.kd.toFixed(1)} kd`;
+    modes.appendChild(chip);
+  }
+  if (modes.childElementCount) fnStatsBody.appendChild(modes);
+
+  if (data.battlePass?.level > 1) {
+    const bp = document.createElement('div');
+    bp.className = 'fn-stats-modes';
+    const chip = document.createElement('span');
+    chip.className = 'fn-mode';
+    chip.textContent = `bp ${data.battlePass.level}`;
+    bp.appendChild(chip);
+    fnStatsBody.appendChild(bp);
+  }
+}
+
+async function loadFortniteStats() {
+  if (fnStatsCache || fnStatsLoading || !fnStatsBody) return;
+  fnStatsLoading = true;
+  try {
+    const res = await fetch(FN_STATS_API + '?t=' + Date.now());
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      fnStatsBody.innerHTML = `<div class="fn-stats-error">${data.error || 'could not load stats'}</div>`;
+      return;
+    }
+    fnStatsCache = data;
+    renderFortniteStats(data);
+  } catch {
+    fnStatsBody.innerHTML = '<div class="fn-stats-error">could not load stats</div>';
+  } finally {
+    fnStatsLoading = false;
+  }
+}
+
+if (waveHeading && fnStatsCard) {
+  waveHeading.addEventListener('mouseenter', loadFortniteStats);
+  waveHeading.addEventListener('focus', loadFortniteStats);
 }
 
 if (playBtn && songPreview) {

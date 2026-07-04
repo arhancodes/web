@@ -41,7 +41,15 @@
   </head>
   <body>
     <main class="page">
-      <h1 class="heading">👋</h1>
+      <div class="heading-wrapper">
+        <h1 class="heading" id="waveHeading" tabindex="0" aria-describedby="fnStatsCard">👋</h1>
+        <div class="fn-stats-card" id="fnStatsCard" aria-hidden="true">
+          <div class="fn-stats-label">fortnite</div>
+          <div class="fn-stats-body" id="fnStatsBody">
+            <div class="fn-stats-loading">loading…</div>
+          </div>
+        </div>
+      </div>
       <img class="skill-icons" src="https://skillicons.dev/icons?i=js,ts,rust,java,swift,go,elixir&theme=dark" alt="JavaScript, TypeScript, Rust, Java, Swift, Go, Elixir" />
 
       <nav class="icon-row" aria-label="Social links">

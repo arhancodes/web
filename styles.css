@@ -32,10 +32,102 @@ body {
   max-width: 672px;
 }
 
+.heading-wrapper {
+  position: relative;
+  width: fit-content;
+}
+
 .heading {
   font-size: 3.75rem;
   font-weight: 700;
   line-height: 1.15;
+  cursor: default;
+  outline: none;
+}
+
+.fn-stats-card {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  z-index: 20;
+  background: #111113;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 12px;
+  min-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
+  text-align: left;
+  color: #fff;
+  pointer-events: none;
+}
+
+.heading-wrapper:hover .fn-stats-card,
+.heading-wrapper:focus-within .fn-stats-card {
+  display: block;
+}
+
+.fn-stats-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--stone-400);
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.fn-stats-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.fn-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+}
+
+.fn-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fn-stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.fn-stat-label {
+  font-size: 0.7rem;
+  color: var(--stone-400);
+  text-transform: lowercase;
+}
+
+.fn-stats-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.fn-mode {
+  font-size: 0.68rem;
+  color: var(--stone-300);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  padding: 3px 8px;
+}
+
+.fn-stats-loading,
+.fn-stats-error {
+  font-size: 0.8125rem;
+  color: var(--stone-400);
 }
 
 .name-gradient {
