@@ -68,13 +68,16 @@ body {
   display: block;
 }
 
-.fn-stats-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--stone-400);
-  letter-spacing: 0.05em;
+.fn-stats-brand {
+  display: flex;
+  align-items: center;
   margin-bottom: 8px;
+}
+
+.fn-stats-brand svg {
+  height: 16px;
+  width: auto;
+  fill: #fff;
 }
 
 .fn-stats-name {
